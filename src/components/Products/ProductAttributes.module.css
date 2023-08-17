@@ -1,0 +1,31 @@
+.name {
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.name.overlay {
+  font-family: "Raleway", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 5px;
+  text-transform: capitalize;
+}
+
+.name.main-cart {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 5px;
+  text-transform: none;
+}
+
+.attribute-items {
+  display: flex;
+  font-family: "Source Sans Pro", sans-serif;
+  margin-bottom: 15px;
+}
+
+.attribute-items.cart-overlay {
+  margin-bottom: 5px;
+}

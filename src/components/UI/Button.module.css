@@ -1,0 +1,59 @@
+.btn {
+  width: 292px;
+  height: 52px;
+  margin-bottom: 35px;
+  border: none;
+  font: inherit;
+  outline: none;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #5ece7b;
+  transition: box-shadow 0.3s ease, text-shadow 0.2s linear;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.view-bag {
+ margin: 20px;
+  width: 140px;
+  height: 43px;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #1D1F22;
+  border: 1px solid #1D1F22;
+  margin: 0;
+}
+
+.check-out {
+  width: 140px;
+  height: 43px;
+  font-size: 14px;
+  margin: 0;
+}
+
+.order {
+  width: 279px;
+  height: 43px;
+}
+
+.btn:hover {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+button:active {
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn:disabled {
+  background-color: #5ece7b;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  opacity: 0.8;
+  box-shadow: none;
+  text-shadow: none;
+}

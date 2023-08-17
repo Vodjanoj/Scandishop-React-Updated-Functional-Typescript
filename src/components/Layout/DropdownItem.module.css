@@ -1,0 +1,9 @@
+.item {
+  padding: 10px 20px 5px 20px;
+  font-weight: 500;
+}
+
+.item:hover {
+  background-color: #eeeeee;
+  cursor: pointer;
+}

@@ -1,0 +1,89 @@
+.header {
+  position: fixed;
+  background-color: #ffffff;
+  left: 0%;
+  top: 0%;
+  width: 100%;
+  z-index: 15;
+}
+
+.inner {
+  margin: 0 auto;
+  padding: 0 5px;
+  max-width: 1240px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  position: relative;
+  left: -4.7%;
+  padding-top: 10px;
+}
+
+.nav {
+  font-size: 16px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+.nav a {
+  padding: 30px 15px;
+  text-decoration: none;
+  transition: text-shadow 0.5s ease;
+  position: relative;
+  color: #1d1f22;
+}
+
+.nav a::after {
+  content: "";
+  opacity: 0;
+  width: 100%;
+  height: 2px;
+  display: block;
+  background-color: #5ece7b;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  transition: opacity 0.3s linear;
+}
+
+.nav a:hover {
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+.nav a:active,
+.nav a:active:hover,
+.nav a.active {
+  color: #5ece7b;
+  font-weight: 600;
+}
+
+.nav a.active:after {
+  opacity: 1;
+  transition: box-shadow 0.5s ease;
+}
+
+.nav a.active:hover:after {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.nav a::before {
+  display: block;
+  content: attr(title);
+  font-weight: 600;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  width: 114px;
+  align-items: center;
+}

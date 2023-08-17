@@ -1,0 +1,99 @@
+.attribute-item {
+  padding: 14px;
+  position: relative;
+  margin-right: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: box-shadow 0.4s ease; 
+}
+
+.attribute-item.not-colored {
+  padding: 0;
+  font-size: 16px;
+  margin-right: 12px;
+  background-color: #ffffff;
+}
+
+.attribute-item:hover,
+.attribute-item.not-colored:hover {
+  box-shadow: var(--box-shadow);
+}
+
+.attribute-item.cart-overlay {
+  padding: 8px;
+  margin-right: 8px;
+  cursor: auto;
+}
+
+.attribute-item.main-cart {
+  cursor: auto;
+}
+
+.attribute-item.not-colored.cart-overlay {
+  padding: 5px 5px;
+  font-size: 14px;
+  line-height: 1;
+  background-color: #ffffff;
+}
+
+.attribute-item .checkmark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s ease, text-shadow 0.4s ease;
+}
+
+.attribute-item .checkmark:hover {
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.attribute-item .checkmark::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  bottom: -2px;
+  left: -2px;
+  border: 1px solid #5ece7b;
+}
+
+.attribute-item.not-colored .checkmark {
+  color: #000000;
+  opacity: 1;
+}
+
+.attribute-item input {
+  display: none;
+}
+
+.attribute-item input:checked + .checkmark {
+  opacity: 1;
+}
+
+.attribute-item.not-colored .checkmark::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 1px solid #000000;
+}
+
+.attribute-item.not-colored input:checked + .checkmark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #000000;
+}
+
+.attribute-item.not-colored.cart-overlay input:checked + .checkmark {
+  line-height: 1;
+  font-size: 14px;
+  box-shadow: 0 0 0 5px #000000;
+}

@@ -1,0 +1,62 @@
+.card {
+  display: flex;
+}
+
+.details {
+  width: 40%;
+  margin-left: 100px;
+}
+
+.brand {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.name {
+  font-size: 30px;
+  line-height: 1.4;
+  margin-bottom: 30px;
+}
+
+.attributes {
+  margin-bottom: 40px;
+}
+
+.price {
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.current-price {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.description {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+.description h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.description h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.description ul {
+  padding: 0 0 0 25px;
+  list-style: initial;
+}
+
+.description p {
+  margin: 0 0 16px 0;
+}

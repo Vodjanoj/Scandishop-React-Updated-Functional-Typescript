@@ -1,0 +1,166 @@
+.cart-item {
+  padding: 24px 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.cart-item:first-child {
+  border-top: 1px solid #e5e5e5;
+}
+
+.cart-item.overlay {
+  padding: 0;
+  border: none;
+  margin-bottom: 40px;
+}
+
+.summary {
+  display: flex;
+  flex-basis: 82%;
+  justify-content: space-between;
+}
+
+.cart-item.overlay .summary {
+  flex-basis: 56%;
+}
+
+.details {
+  flex-basis: 95.5%;
+  padding-left: 2px;
+}
+
+.cart-item.overlay .details {
+  flex-basis: 80%;
+  font-size: 16px;
+}
+
+.brand {
+  font-size: 30px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.cart-item.overlay .brand {
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 4px;
+}
+
+.name {
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.cart-item.overlay .name {
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 7px;
+}
+
+.price {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.cart-item.overlay .price {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex-basis: 45px;
+}
+
+.cart-item.overlay .actions {
+  flex-basis: 4.5%
+}
+
+.add-item,
+.delete-item {
+  position: relative;
+  width: 45px;
+  height: 45px;
+  border: 1px solid #000000;
+  cursor: pointer;
+}
+
+.add-item:hover,
+.delete-item:hover {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.cart-item.overlay .add-item,
+.cart-item.overlay .delete-item {
+  width: 24px;
+  height: 24px;
+}
+
+.add-item::before,
+.add-item::after,
+.delete-item::before {
+  position: absolute;
+  content: "";
+  width: 15px;
+  height: 1px;
+  background-color: #000000;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.add-item::after {
+  width: 1px;
+  height: 15px;
+}
+
+.cart-item.overlay .add-item::before,
+.cart-item.overlay .add-item::after,
+.cart-item.overlay .delete-item::before {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 1px;
+  background-color: #000000;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.cart-item.overlay .add-item::after {
+  width: 1px;
+  height: 8px;
+}
+
+.overlay-gray {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(197, 201, 201, 0.1);
+  z-index: 14;
+}
+
+.image {
+  position: relative;
+  flex-basis: 16.27%;
+}
+
+.cart-item.overlay .image {
+  flex-basis: 41.4%;
+}
+
+.image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
