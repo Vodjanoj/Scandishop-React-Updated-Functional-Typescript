@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import  { Component } from "react";
 import ProductList from "./ProductList";
 import { withRouter } from "react-router-dom";
 import classes from "./Category.module.css";
