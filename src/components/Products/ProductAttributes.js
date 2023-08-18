@@ -1,17 +1,18 @@
 import ProductAttributesItem from "./ProductAttributesItem";
 import classes from "./ProductAttributes.module.css";
 
-const ProductAttributes = ({
-  cartOverlay,
-  mainCart,
-  attributes,
-  attrId,
-  attrName,
-  onSelectAttr,
-  orderItemId,
-  selectedAttributes,
-}) => {
-  
+const ProductAttributes = (props) => {
+  const {
+    cartOverlay,
+    mainCart,
+    attributes,
+    attrId,
+    attrName,
+    onSelectAttr,
+    orderItemId,
+    selectedAttributes,
+  } = props;
+
   const findSelected = (attrItemId, attrId) => {
     const filteredAttrById = selectedAttributes.filter(
       (selectedAtr) =>

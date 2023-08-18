@@ -17,15 +17,15 @@ class MainNavigation extends Component {
   componentDidMount() {
     const loadAllCategoriesHandler = async () => {
       try {
-      const data = await getCategories();
+        const data = await getCategories();
 
-      this.setState({
-        allCategories: data,
-      });
-    } catch (error) {
-      this.setState({ error: true });
-    }
-  }
+        this.setState({
+          allCategories: data,
+        });
+      } catch (error) {
+        this.setState({ error: true });
+      }
+    };
     loadAllCategoriesHandler();
   }
 
@@ -51,7 +51,7 @@ class MainNavigation extends Component {
             ))}
           </nav>
           <div className={classes.logo}>
-            <Link to={"/"} exact>
+            <Link to={"/"} exact="true">
               <img src={mainLogo} alt="Shopping!"></img>
             </Link>
           </div>
