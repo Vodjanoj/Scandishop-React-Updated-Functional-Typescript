@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { createSelector } from "reselect";
 import classes from "./Cart.module.css";
 import Backdrop from "../UI/Backdrop";
 import CartItem from "./CartItem";
@@ -8,8 +9,22 @@ import { cartActions } from "../../store/cart-slice";
 import Button from "../UI/Button";
 import { Link } from "react-router-dom";
 
+// Create individual selectors
+const cartItemsSelector = (state) => state.cart.items;
+const totalQuantitySelector = (state) => state.cart.totalQuantity;
+const setCurrSymbolSelector = (state) => state.currency.setCurrSymbol;
+
+// Create memoized selector using createSelector
+const cartDataSelector = createSelector(
+  [cartItemsSelector, totalQuantitySelector, setCurrSymbolSelector],
+  (items, totalQuantity, setCurrSymbol) => ({
+    products: items,
+    totalQuantity,
+    setCurrSymbol,
+  })
+);
+
 const Cart = (props) => {
-  
   const { cartOverlay, onCloseCartOverlay } = props;
   const dispatch = useDispatch();
 
@@ -19,11 +34,7 @@ const Cart = (props) => {
     }
   }, [cartOverlay]);
 
-  const { products, totalQuantity, setCurrSymbol } = useSelector((state) => ({
-    products: state.cart.items,
-    totalQuantity: state.cart.totalQuantity,
-    setCurrSymbol: state.currency.setCurrSymbol,
-  }));
+  const { products, totalQuantity, setCurrSymbol } = useSelector((state) => cartDataSelector(state));
 
   const calcTotalPriceHandler = (currSymb, products) => {
     return products.reduce((sum, { prices, quantity }) => {
