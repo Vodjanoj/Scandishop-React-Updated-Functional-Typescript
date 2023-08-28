@@ -1,25 +1,25 @@
-import   { Component, createRef} from "react";
-import { connect } from "react-redux";
+import { useEffect, useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { getCurrencies } from "../../graphql/queries";
 import classes from "./Dropdown.module.css";
 import { initCurrency } from "../../store/currency-actions";
 import { currencyActions } from "../../store/currency-slice";
 import DropdownItem from "./DropdownItem";
 
-class Dropdown extends Component {
-  dropdownRef = createRef();
-  state = {
-    toggleDropdown: false,
-    allCurrencies: [],
-  };
+const Dropdown = () => {
+  const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [allCurrencies, setAllCurrencies] = useState([]);
+  const dropdownRef = useRef();
+  const dispatch = useDispatch();
+  const setCurrSymbol = useSelector((state) => state.currency.setCurrSymbol);
 
-  componentDidMount() {
-    document.addEventListener("click", this.clickOutsideHandler);
+  useEffect(() => {
+    document.addEventListener("click", clickOutsideHandler);
     const loadAllCurrenciesHandler = async () => {
       try {
         const data = await getCurrencies();
 
-        this.setState({ allCurrencies: data });
+        setAllCurrencies(data);
       } catch (error) {
         console.log("Something went wrong!");
         console.log(error);
@@ -27,68 +27,62 @@ class Dropdown extends Component {
     };
     loadAllCurrenciesHandler();
 
-    this.props.onInitCurrency(); // fires Redux Thunk initCurrency
-  }
+    dispatch(initCurrency());
 
-  componentWillUnmount() {
-    document.removeEventListener("click", this.clickOutsideHandler);
-  }
+    return () => {
+      document.removeEventListener("click", clickOutsideHandler);
+    };
+  }, [dispatch]);
 
-  toggleDropdownHandler = () => {
-    this.setState((prevState) => {
-      return { toggleDropdown: !prevState.toggleDropdown };
-    });
+  const toggleDropdownHandler = () => {
+    setToggleDropdown((prevState) => !prevState);
   };
 
-  clickOutsideHandler = (event) => {
-    const current = this.dropdownRef.current;
+  const clickOutsideHandler = (event) => {
+    const current = dropdownRef.current;
 
     if (!current.contains(event.target)) {
-      this.setState({ toggleDropdown: false });
+      setToggleDropdown(false);
     }
   };
 
-  render() {
-    const { setCurrSymbol, onCurrencySwitch } = this.props;
-    const { allCurrencies, toggleDropdown } = this.state;
-    return (
-      <div
-        ref={this.dropdownRef}
-        onClick={this.toggleDropdownHandler}
-        className={`${classes.currency} ${
-          toggleDropdown ? classes.active : ""
-        }`}
-      >
-        {setCurrSymbol}
-        {toggleDropdown && (
-          <ul>
-            {allCurrencies.map((item, index) => (
-              <DropdownItem
-                key={index + item.symbol}
-                symbol={item.symbol}
-                label={item.label}
-                onSelect={() => onCurrencySwitch(item.symbol)}
-              />
-            ))}
-          </ul>
-        )}
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    setCurrSymbol: state.currency.setCurrSymbol,
-  };
+  return (
+    <div
+      ref={dropdownRef}
+      onClick={toggleDropdownHandler}
+      className={`${classes.currency} ${toggleDropdown ? classes.active : ""}`}
+    >
+      {setCurrSymbol}
+      {toggleDropdown && (
+        <ul>
+          {allCurrencies.map((item, index) => (
+            <DropdownItem
+              key={index + item.symbol}
+              symbol={item.symbol}
+              label={item.label}
+              onSelect={() =>
+                dispatch(currencyActions.currencySwitch(item.symbol))
+              }
+            />
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onInitCurrency: () => dispatch(initCurrency()),
-    onCurrencySwitch: (symbol) =>
-      dispatch(currencyActions.currencySwitch(symbol)),
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     setCurrSymbol: state.currency.setCurrSymbol,
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dropdown);
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     onInitCurrency: () => dispatch(initCurrency()),
+//     onCurrencySwitch: (symbol) =>
+//       dispatch(currencyActions.currencySwitch(symbol)),
+//   };
+// };
+
+export default Dropdown;
