@@ -71,18 +71,4 @@ const Dropdown = () => {
   );
 };
 
-// const mapStateToProps = (state) => {
-//   return {
-//     setCurrSymbol: state.currency.setCurrSymbol,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onInitCurrency: () => dispatch(initCurrency()),
-//     onCurrencySwitch: (symbol) =>
-//       dispatch(currencyActions.currencySwitch(symbol)),
-//   };
-// };
-
 export default Dropdown;
