@@ -14,11 +14,11 @@ root.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
       <BrowserRouter>
-        <React.StrictMode>
+        {/* <React.StrictMode> */}
           <PersistGate loading={null} persistor={persistor}>
             <App />
           </PersistGate>
-        </React.StrictMode>
+        {/* </React.StrictMode> */}
       </BrowserRouter>
     </Provider>
   </ApolloProvider>

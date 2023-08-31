@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import ProductAttributes from "./ProductAttributes";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { filterPrices } from "../Utils/filterPrices";
 import { getProductsById } from "../../graphql/queries";
 import { getProductsAttributesById } from "../../graphql/queries";
@@ -11,72 +11,15 @@ import { cartActions } from "../../store/cart-slice";
 import Gallery from "./Gallery";
 import Button from "../UI/Button";
 
-class ProductDetail extends Component {
-  state = {
-    productDetails: {},
-    selectedImage: null,
-    selectedAttributes: [],
-    error: false,
-  };
+const ProductDetail = (props) => {
+  const [productDetails, setProductDetails] = useState({});
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedAttributes, setSelectedAttributes] = useState([]);
+  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
+  const { productId } = props.match.params;
 
-  selectAttrHandler = (attId, attItemId) => {
-    const { selectedAttributes } = this.state;
-    const updatedSelcAttr = selectedAttributes.map((attribute) =>
-      attribute.id === attId
-        ? { ...attribute, selectedAttrItemId: attItemId }
-        : attribute
-    );
-
-    this.setState((prevState) => {
-      return {
-        ...prevState,
-        selectedAttributes: updatedSelcAttr,
-      };
-    });
-  };
-
-  selectImageHandler = (image) => {
-    this.setState((prevState) => {
-      return {
-        ...prevState,
-        selectedImage: image,
-      };
-    });
-  };
-
-  addToCartHandler = () => {
-    const { selectedAttributes } = this.state;
-    const {
-      id,
-      brand,
-      name,
-      gallery,
-      attributes,
-      prices,
-    } = this.state.productDetails;
-
-    const idForCart = selectedAttributes.reduce(
-      (collectAttr, currentAtrItem) =>
-        collectAttr + "_" + currentAtrItem.selectedAttrItemId,
-      ""
-    );
-
-    const { onAddToCart } = this.props;
-    onAddToCart({
-      id: id + idForCart,
-      brand: brand,
-      name: name,
-      gallery: gallery,
-      attributes: attributes,
-      prices: prices,
-      selectedAttributes: selectedAttributes,
-      quantity: 1,
-    });
-  };
-
-  componentDidMount() {
-    const productId = this.props.match.params.productId;
-
+  useEffect(() => {
     const loadProductDetailsHandler = async () => {
       try {
         const product = await getProductsById(productId);
@@ -94,107 +37,125 @@ class ProductDetail extends Component {
           selectedAttrItemId: attribute.items[0].id,
         }));
 
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            productDetails: { ...product, attributes },
-            selectedImage: product.gallery[0],
-            selectedAttributes: selectedAttributes,
-          };
-        });
+        setProductDetails({ ...product, attributes });
+        setSelectedImage(product.gallery[0]);
+        setSelectedAttributes(selectedAttributes);
       } catch (error) {
-        this.setState({ error: true });
+        setError(true);
       }
     };
     loadProductDetailsHandler();
-  }
+  }, [productId]);
 
-  render() {
-    const { selectedAttributes, error } = this.state;
-    const {
-      brand,
-      name,
-      gallery,
-      attributes,
-      prices,
-      inStock,
-      description,
-    } = this.state.productDetails;
-
-    const { selectedImage } = this.state;
-    const { setCurrSymbol } = this.props;
-
-    const sanitizedDescription = DOMPurify.sanitize(description);
-
-    let price;
-    if (prices && setCurrSymbol !== "") {
-      const amount = filterPrices(prices, setCurrSymbol);
-      price = amount[0].amount;
-    }
-
-    if (error) {
-      return <p>Sorry, something went wrong</p>;
-    }
-
-    return (
-      <>
-        <div className={classes.card}>
-          <Gallery
-            onSelectImage={this.selectImageHandler}
-            selectedImage={selectedImage}
-            images={gallery}
-            name={name}
-            brand={brand}
-          />
-          <div className={classes.details}>
-            <h1 className={classes.brand}>{brand}</h1>
-            <h2 className={classes.name}>{name}</h2>
-            {attributes && (
-              <div className={classes.attributes}>
-                {attributes.map((attribute, index) => (
-                  <ProductAttributes
-                    key={index + attribute.id}
-                    attrName={attribute.name}
-                    attrId={attribute.id}
-                    attributes={attribute}
-                    selectedAttributes={selectedAttributes}
-                    onSelectAttr={this.selectAttrHandler}
-                  />
-                ))}
-              </div>
-            )}
-            <div className={classes.price}>Price:</div>
-            <div className={classes["current-price"]}>
-              {setCurrSymbol}
-              {price}
-            </div>
-            <Button disabled={!inStock} clicked={this.addToCartHandler}>
-              {inStock ? "Add to Cart" : "Out of Stock"}
-            </Button>
-            <div
-              className={classes.description}
-              dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-            />
-          </div>
-        </div>
-      </>
+  const selectAttrHandler = (attId, attItemId) => {
+    const updatedSelcAttr = selectedAttributes.map((attribute) =>
+      attribute.id === attId
+        ? { ...attribute, selectedAttrItemId: attItemId }
+        : attribute
     );
+
+    setSelectedAttributes(updatedSelcAttr);
+  };
+
+  const selectImageHandler = (image) => {
+    setSelectedImage(image);
+  };
+
+  const addToCartHandler = () => {
+    const { id, brand, name, gallery, attributes, prices } = productDetails;
+
+    const idForCart = selectedAttributes.reduce(
+      (collectAttr, currentAtrItem) =>
+        collectAttr + "_" + currentAtrItem.selectedAttrItemId,
+      ""
+    );
+
+    dispatch(
+      cartActions.addToCart({
+        id: id + idForCart,
+        brand: brand,
+        name: name,
+        gallery: gallery,
+        attributes: attributes,
+        prices: prices,
+        selectedAttributes: selectedAttributes,
+        quantity: 1,
+      })
+    );
+  };
+
+  const { brand, name, gallery, attributes, prices, inStock, description } =
+    productDetails;
+
+  const setCurrSymbol = useSelector((state) => state.currency.setCurrSymbol);
+
+  const sanitizedDescription = DOMPurify.sanitize(description);
+
+  let price;
+  if (prices && setCurrSymbol !== "") {
+    const amount = filterPrices(prices, setCurrSymbol);
+    price = amount[0].amount;
   }
-}
 
-const mapStateToProps = (state) => {
-  return {
-    setCurrSymbol: state.currency.setCurrSymbol,
-  };
+  if (error) {
+    return <p>Sorry, something went wrong</p>;
+  }
+
+  return (
+    <>
+      <div className={classes.card}>
+        <Gallery
+          onSelectImage={selectImageHandler}
+          selectedImage={selectedImage}
+          images={gallery}
+          name={name}
+          brand={brand}
+        />
+        <div className={classes.details}>
+          <h1 className={classes.brand}>{brand}</h1>
+          <h2 className={classes.name}>{name}</h2>
+          {attributes && (
+            <div className={classes.attributes}>
+              {attributes.map((attribute, index) => (
+                <ProductAttributes
+                  key={index + attribute.id}
+                  attrName={attribute.name}
+                  attrId={attribute.id}
+                  attributes={attribute}
+                  selectedAttributes={selectedAttributes}
+                  onSelectAttr={selectAttrHandler}
+                />
+              ))}
+            </div>
+          )}
+          <div className={classes.price}>Price:</div>
+          <div className={classes["current-price"]}>
+            {setCurrSymbol}
+            {price}
+          </div>
+          <Button disabled={!inStock} clicked={addToCartHandler}>
+            {inStock ? "Add to Cart" : "Out of Stock"}
+          </Button>
+          <div
+            className={classes.description}
+            dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+          />
+        </div>
+      </div>
+    </>
+  );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAddToCart: (item) => dispatch(cartActions.addToCart(item)),
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     setCurrSymbol: state.currency.setCurrSymbol,
+//   };
+// };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(ProductDetail));
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     onAddToCart: (item) => dispatch(cartActions.addToCart(item)),
+//   };
+// };
+
+export default withRouter(ProductDetail);

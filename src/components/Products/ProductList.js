@@ -1,17 +1,18 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import ProductItem from "./ProductItem";
 import classes from "./ProductList.module.css";
 import { filterPrices } from "../Utils/filterPrices";
 import { cartActions } from "../../store/cart-slice";
 import { getProductsAttributesById } from "../../graphql/queries";
 
-class ProductList extends Component {
-  state = {
-    error: false,
-  };
+const ProductList = (props) => {
+  const [error, setError] = useState(false);
+  const { productItems } = props;
+  let { setCurrSymbol } = useSelector((state) => state.currency);
+  const dispatch = useDispatch();
 
-  addToCartHandler = (event, prodItem) => {
+  const addToCartHandler = (event, prodItem) => {
     event.preventDefault();
 
     const loadProductDetailsHandler = async () => {
@@ -30,64 +31,48 @@ class ProductList extends Component {
           ""
         );
 
-        const { onAddToCart } = this.props;
-
-        onAddToCart({
-          id: prodItem.id + idForCart,
-          brand: prodItem.brand,
-          name: prodItem.name,
-          gallery: prodItem.gallery,
-          attributes: attributes,
-          prices: prodItem.prices,
-          selectedAttributes: selectedAttributes,
-          quantity: 1,
-        });
+        dispatch(
+          cartActions.addToCart({
+            id: prodItem.id + idForCart,
+            brand: prodItem.brand,
+            name: prodItem.name,
+            gallery: prodItem.gallery,
+            attributes: attributes,
+            prices: prodItem.prices,
+            selectedAttributes: selectedAttributes,
+            quantity: 1,
+          })
+        );
       } catch (error) {
         console.log(error);
-        this.setState({ error: true });
+        setError(true);
       }
     };
     loadProductDetailsHandler();
   };
 
-  render() {
-    const { error } = this.state;
-    const { productItems, setCurrSymbol } = this.props;
-    if (error) {
-      return <p>Sorry, something went wrong!</p>;
-    }
-    return (
-      <>
-        <div className={classes.products}>
-          {productItems.map((item, index) => (
-            <ProductItem
-              key={index + item.id}
-              id={item.id}
-              onAddToCart={(event) => this.addToCartHandler(event, item)}
-              brand={item.brand}
-              name={item.name}
-              inStock={item.inStock}
-              prices={item.prices}
-              currPrice={filterPrices(item.prices, setCurrSymbol)}
-              image={item.image}
-            />
-          ))}
-        </div>
-      </>
-    );
+  if (error) {
+    return <p>Sorry, something went wrong!</p>;
   }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    setCurrSymbol: state.currency.setCurrSymbol,
-  };
+  return (
+    <>
+      <div className={classes.products}>
+        {productItems.map((item, index) => (
+          <ProductItem
+            key={index + item.id}
+            id={item.id}
+            onAddToCart={(event) => addToCartHandler(event, item)}
+            brand={item.brand}
+            name={item.name}
+            inStock={item.inStock}
+            prices={item.prices}
+            currPrice={filterPrices(item.prices, setCurrSymbol)}
+            image={item.image}
+          />
+        ))}
+      </div>
+    </>
+  );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAddToCart: (item) => dispatch(cartActions.addToCart(item)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+export default ProductList;

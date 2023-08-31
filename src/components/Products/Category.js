@@ -10,8 +10,6 @@ const Category = () => {
   const [productsByCategory, setProductsByCategory] = useState([]);
   const [error, setError] = useState(false);
 
-  console.log("categoryName", categoryName);
-
   const getData = (categoryName) => {
     const loadProductsByCatHandler = async () => {
       try {
