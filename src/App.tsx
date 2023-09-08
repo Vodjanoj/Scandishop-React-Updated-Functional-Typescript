@@ -8,7 +8,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import NotFound from "./components/UI/NotFound";
 
 const App = () => {
-  const [allCategory, setAllCategory] = useState("");
+  const [allCategory, setAllCategory] = useState<string>("");
 
   useEffect(() => {
     const loadAllCageriesHandler = async () => {
