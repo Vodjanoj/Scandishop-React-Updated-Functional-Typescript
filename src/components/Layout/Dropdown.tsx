@@ -5,20 +5,21 @@ import classes from "./Dropdown.module.css";
 import { initCurrency } from "../../store/currency-actions";
 import { currencyActions } from "../../store/currency-slice";
 import DropdownItem from "./DropdownItem";
+import { RootState } from "../../store";
 
 const Dropdown = () => {
-  const [toggleDropdown, setToggleDropdown] = useState(false);
-  const [allCurrencies, setAllCurrencies] = useState([]);
+  const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
+  const [allCurrencies, setAllCurrencies] = useState<{ label: string; symbol: string }[]>([]);
   const dropdownRef = useRef();
   const dispatch = useDispatch();
-  const setCurrSymbol = useSelector((state) => state.currency.setCurrSymbol);
+  const setCurrSymbol = useSelector((state: RootState) => state.currency.setCurrSymbol);
 
   useEffect(() => {
     document.addEventListener("click", clickOutsideHandler);
     const loadAllCurrenciesHandler = async () => {
       try {
         const data = await getCurrencies();
-
+        
         setAllCurrencies(data);
       } catch (error) {
         console.log("Something went wrong!");
@@ -26,7 +27,7 @@ const Dropdown = () => {
       }
     };
     loadAllCurrenciesHandler();
-
+    // @ts-ignore
     dispatch(initCurrency());
 
     return () => {
@@ -37,17 +38,22 @@ const Dropdown = () => {
   const toggleDropdownHandler = () => {
     setToggleDropdown((prevState) => !prevState);
   };
-
+  // @ts-ignore
   const clickOutsideHandler = (event) => {
     const current = dropdownRef.current;
-
+    // @ts-ignore
     if (!current.contains(event.target)) {
       setToggleDropdown(false);
     }
   };
 
+  const selectCurrencyHandler = (currSymb: string) => {
+    dispatch(currencyActions.currencySwitch(currSymb));
+  };
+
   return (
     <div
+      // @ts-ignore
       ref={dropdownRef}
       onClick={toggleDropdownHandler}
       className={`${classes.currency} ${toggleDropdown ? classes.active : ""}`}
@@ -60,9 +66,7 @@ const Dropdown = () => {
               key={index + item.symbol}
               symbol={item.symbol}
               label={item.label}
-              onSelect={() =>
-                dispatch(currencyActions.currencySwitch(item.symbol))
-              }
+              onSelectCurrency={() => selectCurrencyHandler(item.symbol)}
             />
           ))}
         </ul>

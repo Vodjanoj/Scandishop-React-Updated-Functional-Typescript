@@ -3,14 +3,14 @@ import classes from "./DropdownItem.module.css";
 type DropdownItemProps = {
   symbol: string;
   label: string;
-  onSelect: any;
+  onSelectCurrency: () => void;
 };
 
 const DropdownItem = (props: DropdownItemProps) => {
-  const { symbol, label, onSelect } = props;
+  const { symbol, label, onSelectCurrency } = props;
   return (
     <li>
-      <div className={classes.item} onClick={(e) => onSelect(e)}>
+      <div className={classes.item} onClick={onSelectCurrency}>
         {symbol} {label}
       </div>
     </li>

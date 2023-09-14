@@ -146,16 +146,4 @@ const ProductDetail = (props) => {
   );
 };
 
-// const mapStateToProps = (state) => {
-//   return {
-//     setCurrSymbol: state.currency.setCurrSymbol,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onAddToCart: (item) => dispatch(cartActions.addToCart(item)),
-//   };
-// };
-
 export default withRouter(ProductDetail);

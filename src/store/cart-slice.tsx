@@ -1,6 +1,50 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 
-const defaultCartState = {
+interface CartItem {
+  id: string;
+  name: string;
+  brand: string;
+  quantity: number;
+  gallery: string[];
+  attributes: Attribute[];
+  prices: Price[];
+  selectedAttributes: selectedAttribute[];
+}
+
+interface Attribute {
+  id: string;
+  name: string;
+  items: AttributeItem[];
+}
+
+interface AttributeItem {
+  id: string;
+  displayValue: string;
+  value: string;
+}
+
+interface Price {
+  amount: number;
+  currency: CurrencyItem;
+}
+
+interface CurrencyItem {
+  label: string;
+  symbol: string;
+}
+
+interface selectedAttribute {
+  id: string;
+  name: string;
+  selectedAttrItemId: string;
+}
+
+interface CartSliceState {
+  items: CartItem[];
+  totalQuantity: number;
+}
+
+const defaultCartState: CartSliceState = {
   items: [],
   totalQuantity: 0,
 };
@@ -9,7 +53,7 @@ const cartSlice = createSlice({
   name: "Cart",
   initialState: defaultCartState,
   reducers: {
-    addToCart(state, action) {
+    addToCart(state, action: PayloadAction<CartItem>) {
       const newItem = action.payload;
       state.totalQuantity++;
 
@@ -28,6 +72,7 @@ const cartSlice = createSlice({
           quantity: existingCartItem.quantity + 1,
         };
       }
+      console.log(current(state));
     },
 
     removeFromCart(state, action) {

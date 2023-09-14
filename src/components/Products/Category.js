@@ -14,21 +14,22 @@ const Category = () => {
     const loadProductsByCatHandler = async () => {
       try {
         const data = await getProductsByCategory(categoryName);
-        const loadedProductsByCat = [];
+        console.log('products by categories', data)
+        // const loadedProductsByCat = [];
 
-        for (const key of data) {
-          loadedProductsByCat.push({
-            id: key.id,
-            brand: key.brand,
-            name: key.name,
-            inStock: key.inStock,
-            image: key.gallery[0],
-            prices: key.prices,
-            gallery: key.gallery,
-          });
-        }
+        // for (const key of data) {
+        //   loadedProductsByCat.push({
+        //     id: key.id,
+        //     brand: key.brand,
+        //     name: key.name,
+        //     inStock: key.inStock,
+        //     image: key.gallery[0],
+        //     prices: key.prices,
+        //     gallery: key.gallery,
+        //   });
+        // }
 
-        setProductsByCategory(loadedProductsByCat);
+        setProductsByCategory(data);
       } catch (error) {
         console.log(error);
         setError(true);

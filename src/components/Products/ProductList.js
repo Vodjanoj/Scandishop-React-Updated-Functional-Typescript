@@ -67,7 +67,7 @@ const ProductList = (props) => {
             inStock={item.inStock}
             prices={item.prices}
             currPrice={filterPrices(item.prices, setCurrSymbol)}
-            image={item.image}
+            image={item.gallery[0]}
           />
         ))}
       </div>
