@@ -21,14 +21,16 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "typescript": "^5.2.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "compile": "graphql-codegen",
+    "codegen": "graphql-codegen",
+    "watch": "graphql-codegen --watch"
   },
   "eslintConfig": {
     "extends": [
@@ -50,7 +52,11 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@types/react-router-dom": "^5.3.3",
+    "typescript": "^5.2.2",
     "typescript-plugin-css-modules": "^5.0.1"
   }
 }

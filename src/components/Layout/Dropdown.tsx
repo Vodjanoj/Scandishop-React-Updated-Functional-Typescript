@@ -6,21 +6,26 @@ import { initCurrency } from "../../store/currency-actions";
 import { currencyActions } from "../../store/currency-slice";
 import DropdownItem from "./DropdownItem";
 import { RootState } from "../../store";
+import { Currency } from "../../gql/graphql";
 
 const Dropdown = () => {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
-  const [allCurrencies, setAllCurrencies] = useState<{ label: string; symbol: string }[]>([]);
+  const [allCurrencies, setAllCurrencies] = useState<Currency[]>([]);
   const dropdownRef = useRef();
   const dispatch = useDispatch();
-  const setCurrSymbol = useSelector((state: RootState) => state.currency.setCurrSymbol);
+  const setCurrSymbol = useSelector((state: RootState) => state.currency.setCurrSymbol
+  );
 
   useEffect(() => {
     document.addEventListener("click", clickOutsideHandler);
     const loadAllCurrenciesHandler = async () => {
       try {
         const data = await getCurrencies();
-        
-        setAllCurrencies(data);
+
+        if (data && Array.isArray(data)) {
+          console.log(data)
+          setAllCurrencies(data.filter((currency) => currency !== null) as Currency[]);
+        }
       } catch (error) {
         console.log("Something went wrong!");
         console.log(error);
@@ -61,14 +66,15 @@ const Dropdown = () => {
       {setCurrSymbol}
       {toggleDropdown && (
         <ul>
-          {allCurrencies.map((item, index) => (
-            <DropdownItem
-              key={index + item.symbol}
-              symbol={item.symbol}
-              label={item.label}
-              onSelectCurrency={() => selectCurrencyHandler(item.symbol)}
-            />
-          ))}
+          {allCurrencies &&
+            allCurrencies.map((item, index) => (
+              <DropdownItem
+                key={index + item.symbol}
+                symbol={item.symbol}
+                label={item.label}
+                onSelectCurrency={() => selectCurrencyHandler(item.symbol)}
+              />
+            ))}
         </ul>
       )}
     </div>

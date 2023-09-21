@@ -15,7 +15,9 @@ const App = () => {
       try {
         const data = await getCategories();
 
-        setAllCategory(data[0].name);
+        const categoryName = data?.[0]?.name || "";
+
+        setAllCategory(categoryName);
       } catch (error) {
         console.log("Something went wrong!");
         console.log(error);

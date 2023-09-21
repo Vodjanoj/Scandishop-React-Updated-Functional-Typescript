@@ -1,4 +1,6 @@
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+ import { graphql } from "../gql";
+ 
 
 const GRAPH_URL = "http://localhost:4000/";
 
@@ -8,13 +10,13 @@ export const client = new ApolloClient({
 });
 
 export async function getCategories() {
-  const query = gql`
-    query {
+  const query = graphql(`
+   query AllCategoriesQuery {
       categories {
         name
       }
     }
-  `;
+  `);
   const {
     data: { categories },
   } = await client.query({ query });
@@ -23,21 +25,21 @@ export async function getCategories() {
 }
 
 export async function getCurrencies() {
-  const query = gql`
-    query {
+  const query = graphql(`
+    query AllCurrenciesQuery {
       currencies {
         label
         symbol
       }
     }
-  `;
+  `);
   const {
     data: { currencies },
   } = await client.query({ query });
   return currencies;
 }
 
-export async function getProductsById(id) {
+export async function getProductsById(id: string) {
   const query = gql`
     query ProductQuery($id: String!) {
       product(id: $id) {
@@ -65,7 +67,7 @@ export async function getProductsById(id) {
   return product;
 }
 
-export async function getProductsAttributesById(id) {
+export async function getProductsAttributesById(id:string) {
   const query = gql`
     query ProductAttributesQuery($id: String!) {
       product(id: $id) {
@@ -93,8 +95,8 @@ export async function getProductsAttributesById(id) {
   return attributes;
 }
 
-export async function getProductsByCategory(categoryType) {
-  const query = gql`
+export async function getProductsByCategory(categoryType:string) {
+  const query = graphql(`
     query ProductsByCategoryQuery($categoryType: String!) {
       category(input: { title: $categoryType }) {
         name
@@ -114,13 +116,8 @@ export async function getProductsByCategory(categoryType) {
         }
       }
     }
-  `;
+  `);
   const variables = { categoryType };
-  const {
-    data: {
-      category: { products },
-    },
-  } = await client.query({ query, variables });
-
-  return products;
+  const { data }  = await client.query({ query, variables });
+  return data.category?.products || [] ;
 }

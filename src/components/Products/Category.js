@@ -14,7 +14,7 @@ const Category = () => {
     const loadProductsByCatHandler = async () => {
       try {
         const data = await getProductsByCategory(categoryName);
-        console.log('products by categories', data)
+        
         // const loadedProductsByCat = [];
 
         // for (const key of data) {
