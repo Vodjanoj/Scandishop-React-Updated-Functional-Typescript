@@ -13,7 +13,8 @@ const Dropdown = () => {
   const [allCurrencies, setAllCurrencies] = useState<Currency[]>([]);
   const dropdownRef = useRef();
   const dispatch = useDispatch();
-  const setCurrSymbol = useSelector((state: RootState) => state.currency.setCurrSymbol
+  const setCurrSymbol = useSelector(
+    (state: RootState) => state.currency.setCurrSymbol
   );
 
   useEffect(() => {
@@ -23,8 +24,10 @@ const Dropdown = () => {
         const data = await getCurrencies();
 
         if (data && Array.isArray(data)) {
-          console.log(data)
-          setAllCurrencies(data.filter((currency) => currency !== null) as Currency[]);
+          console.log(data);
+          setAllCurrencies(
+            data.filter((currency) => currency !== null) as Currency[]
+          );
         }
       } catch (error) {
         console.log("Something went wrong!");
@@ -43,8 +46,8 @@ const Dropdown = () => {
   const toggleDropdownHandler = () => {
     setToggleDropdown((prevState) => !prevState);
   };
-  // @ts-ignore
-  const clickOutsideHandler = (event) => {
+
+  const clickOutsideHandler = (event: MouseEvent) => {
     const current = dropdownRef.current;
     // @ts-ignore
     if (!current.contains(event.target)) {
