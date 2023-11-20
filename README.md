@@ -1,6 +1,9 @@
-# Ecommerce Shop
+# Ecommerce Shop (Updating to Functional Components and TypeScript)
 
 This is the frontend part of an ecommerce shop web application built using React.js. It is a test assignment for Scandiweb company.<br /><br />
+
+## Original Version
+The original version of this project can be found [here](https://github.com/Vodjanoj/Scandiweb-React-test-assignment-Vladimirs-Vodjanojs)
 
 ## Getting Started
 
