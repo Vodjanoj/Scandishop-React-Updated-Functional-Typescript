@@ -14,6 +14,7 @@ The original version of this project can be found [here](https://github.com/Vodj
 ## Dependencies
 
 - React.js
+- TypeScript
 - React Router
 - Redux/Toolkit
 - Redux-Persist
