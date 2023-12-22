@@ -14,15 +14,12 @@ const ProductAttributes = (props) => {
   } = props;
 
   const findSelected = (attrItemId, attrId) => {
-    console.log('attrItemId', attrItemId)
-    console.log('attrId', attrId)
-    console.log('selectedAttributes', selectedAttributes)
     const filteredAttrById = selectedAttributes.filter(
       (selectedAtr) =>
         selectedAtr.selectedAttrItemId === attrItemId &&
         selectedAtr.id === attrId
     );
-    console.log('filteredAttrById', filteredAttrById)
+
     return filteredAttrById;
   };
 
