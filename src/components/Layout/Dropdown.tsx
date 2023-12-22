@@ -24,7 +24,6 @@ const Dropdown = () => {
         const data = await getCurrencies();
 
         if (data && Array.isArray(data)) {
-          console.log(data);
           setAllCurrencies(
             data.filter((currency) => currency !== null) as Currency[]
           );

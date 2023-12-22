@@ -58,7 +58,7 @@ const Cart = (props) => {
   const totalPrice = calcTotalPriceHandler(setCurrSymbol, products);
 
   let tax = (totalPrice * 0.21).toFixed(2);
-
+  console.log('products', products)
   return (
     <>
       <div

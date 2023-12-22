@@ -1,36 +1,10 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { Price, Product } from "../gql/graphql";
 
-interface CartItem {
-  id: string;
-  name: string;
-  brand: string;
+interface CartItem extends Product {
   quantity: number;
-  gallery: string[];
-  attributes: Attribute[];
-  prices: Price[];
   selectedAttributes: selectedAttribute[];
-}
-
-interface Attribute {
-  id: string;
-  name: string;
-  items: AttributeItem[];
-}
-
-interface AttributeItem {
-  id: string;
-  displayValue: string;
-  value: string;
-}
-
-interface Price {
-  amount: number;
-  currency: CurrencyItem;
-}
-
-interface CurrencyItem {
-  label: string;
-  symbol: string;
+  prices: Price[];
 }
 
 interface selectedAttribute {

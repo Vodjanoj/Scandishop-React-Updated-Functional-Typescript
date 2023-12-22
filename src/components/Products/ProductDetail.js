@@ -100,7 +100,7 @@ const ProductDetail = (props) => {
   if (error) {
     return <p>Sorry, something went wrong</p>;
   }
-
+  console.log('attributes', )
   return (
     <>
       <div className={classes.card}>
