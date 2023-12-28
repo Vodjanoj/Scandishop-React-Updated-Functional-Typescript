@@ -11,7 +11,7 @@ import { Currency } from "../../gql/graphql";
 const Dropdown = () => {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const [allCurrencies, setAllCurrencies] = useState<Currency[]>([]);
-  const dropdownRef = useRef();
+  const dropdownRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
   const setCurrSymbol = useSelector(
     (state: RootState) => state.currency.setCurrSymbol
@@ -48,9 +48,10 @@ const Dropdown = () => {
 
   const clickOutsideHandler = (event: MouseEvent) => {
     const current = dropdownRef.current;
-    // @ts-ignore
-    if (!current.contains(event.target)) {
-      setToggleDropdown(false);
+    if (current) {
+      if (!current.contains(event.target as Node)) {
+        setToggleDropdown(false);
+      }
     }
   };
 
@@ -60,7 +61,6 @@ const Dropdown = () => {
 
   return (
     <div
-      // @ts-ignore
       ref={dropdownRef}
       onClick={toggleDropdownHandler}
       className={`${classes.currency} ${toggleDropdown ? classes.active : ""}`}
