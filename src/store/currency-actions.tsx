@@ -1,8 +1,9 @@
 import { currencyActions } from "./currency-slice";
 import { getCurrencies } from "../graphql/queries";
+import type { RootState, AppDispatch } from '../store'
 
 export const initCurrency = () => {
-  return (dispatch, getState) => {
+  return (dispatch: AppDispatch, getState:() => RootState) => {
     const state = getState();
 
     if (state.currency.setCurrSymbol) {
@@ -12,9 +13,11 @@ export const initCurrency = () => {
     const loadAllCurrencies = async () => {
       try {
         const data = await getCurrencies();
-        dispatch(currencyActions.setCurrency(data[0].symbol));
-      } catch(error) {
-        console.log('Something went wrong!')
+        if (data && data[0]) {
+          dispatch(currencyActions.setCurrency(data[0].symbol));
+        }
+      } catch (error) {
+        console.log("Something went wrong!");
         console.log(error);
       }
     };

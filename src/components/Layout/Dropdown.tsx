@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../hooks/redux";
 import { getCurrencies } from "../../graphql/queries";
 import classes from "./Dropdown.module.css";
 import { initCurrency } from "../../store/currency-actions";
@@ -12,8 +12,8 @@ const Dropdown = () => {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const [allCurrencies, setAllCurrencies] = useState<Currency[]>([]);
   const dropdownRef = useRef<HTMLInputElement | null>(null);
-  const dispatch = useDispatch();
-  const setCurrSymbol = useSelector(
+  const dispatch = useAppDispatch();
+  const setCurrSymbol = useAppSelector(
     (state: RootState) => state.currency.setCurrSymbol
   );
 
@@ -34,7 +34,7 @@ const Dropdown = () => {
       }
     };
     loadAllCurrenciesHandler();
-    // @ts-ignore
+    
     dispatch(initCurrency());
 
     return () => {

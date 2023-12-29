@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Price, Product } from "../gql/graphql";
 
 interface CartItem extends Product {
@@ -46,7 +46,6 @@ const cartSlice = createSlice({
           quantity: existingCartItem.quantity + 1,
         };
       }
-      console.log(current(state));
     },
 
     removeFromCart(state, action) {
