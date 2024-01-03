@@ -4,32 +4,24 @@ import ProductList from "./ProductList";
 import { withRouter, useParams } from "react-router-dom";
 import classes from "./Category.module.css";
 import { getProductsByCategory } from "../../graphql/queries";
+import { Product } from "../../gql/graphql";
 
 const Category = () => {
-  let { categoryName } = useParams();
-  const [productsByCategory, setProductsByCategory] = useState([]);
+  let { categoryName } = useParams<{ categoryName: string }>();
+  const [productsByCategory, setProductsByCategory] = useState<Product[]>([]);
   const [error, setError] = useState(false);
 
-  const getData = (categoryName) => {
+  const getData = (categoryName: string) => {
     const loadProductsByCatHandler = async () => {
       try {
-        const data = await getProductsByCategory(categoryName);
-        
-        // const loadedProductsByCat = [];
+        const rawData = await getProductsByCategory(categoryName);
 
-        // for (const key of data) {
-        //   loadedProductsByCat.push({
-        //     id: key.id,
-        //     brand: key.brand,
-        //     name: key.name,
-        //     inStock: key.inStock,
-        //     image: key.gallery[0],
-        //     prices: key.prices,
-        //     gallery: key.gallery,
-        //   });
-        // }
+    if (rawData && Array.isArray(rawData)) { 
+      
+      const filteredData: Product[] = rawData.filter((item): item is Product => item !== null);
 
-        setProductsByCategory(data);
+      setProductsByCategory(filteredData);
+    }
       } catch (error) {
         console.log(error);
         setError(true);
