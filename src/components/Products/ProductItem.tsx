@@ -1,13 +1,25 @@
 import classes from "./ProductItem.module.css";
 import circleCartIcon from "../../assets/circle-icon.png";
-import { withRouter } from "react-router";
+import { withRouter, RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
+import { Price } from "../../gql/graphql";
 
-const ProductItem = (props) => {
+interface ProductItemProps extends RouteComponentProps<{ categoryName: string }> {
+  id: string;
+  brand: string;
+  name: string;  
+  inStock: boolean | null | undefined;  
+  currPrice: Price[];  
+  image: string | null | undefined;
+  onAddToCart: (event: React.MouseEvent) => void;  
+}
+
+const ProductItem = (props: ProductItemProps) => {
   const { categoryName } = props.match.params;
   const { symbol } = props.currPrice[0].currency;
   const { amount } = props.currPrice[0];
   const { id, brand, name, image, inStock, onAddToCart } = props;
+
   return (
     <>
       <article className={classes.product}>
@@ -22,7 +34,7 @@ const ProductItem = (props) => {
             )}
             <div className={classes.image}>
               <div className={classes.overlay}></div>
-              <img src={image} alt={brand + ", " + name}></img>
+              {image && <img src={image} alt={brand + ", " + name}></img>}
             </div>
             <div className={classes.name}>
               {brand} {name}
