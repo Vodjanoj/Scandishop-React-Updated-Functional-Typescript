@@ -6,18 +6,23 @@ import { filterPrices } from "../Utils/filterPrices";
 import { getProductsById } from "../../graphql/queries";
 import { getProductsAttributesById } from "../../graphql/queries";
 import classes from "./ProductDetail.module.css";
-import { withRouter } from "react-router-dom";
+import { withRouter, useParams, RouteComponentProps } from "react-router-dom";
 import { cartActions } from "../../store/cart-slice";
 import Gallery from "./Gallery";
 import Button from "../UI/Button";
+import { Product } from "../../gql/graphql";
 
-const ProductDetail = (props) => {
-  const [productDetails, setProductDetails] = useState({});
+interface ProductDetailProps extends RouteComponentProps {
+  
+}
+
+const ProductDetail = ({match}: ProductDetailProps) => {
+  const [productDetails, setProductDetails] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedAttributes, setSelectedAttributes] = useState([]);
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
-  const { productId } = props.match.params;
+  const { productId } = useParams<{ productId: string }>();
 
   useEffect(() => {
     const loadProductDetailsHandler = async () => {
@@ -30,7 +35,7 @@ const ProductDetail = (props) => {
         // If we get attributes from cache they are being mixed with attribites of other products,
         // so we have an issue with correct displaying of attributes associated to a specific product
         const attributes = await getProductsAttributesById(productId);
-
+         // @ts-ignore c
         const selectedAttributes = attributes.map((attribute) => ({
           id: attribute.id,
           name: attribute.name,
@@ -46,26 +51,31 @@ const ProductDetail = (props) => {
     };
     loadProductDetailsHandler();
   }, [productId]);
-
+// @ts-ignore c
   const selectAttrHandler = (attId, attItemId) => {
+     
     const updatedSelcAttr = selectedAttributes.map((attribute) =>
+     // @ts-ignore 
       attribute.id === attId
+       // @ts-ignore 
         ? { ...attribute, selectedAttrItemId: attItemId }
         : attribute
     );
-
+   // @ts-ignore 
     setSelectedAttributes(updatedSelcAttr);
   };
-
+ // @ts-ignore 
   const selectImageHandler = (image) => {
     setSelectedImage(image);
   };
 
   const addToCartHandler = () => {
+     // @ts-ignore 
     const { id, brand, name, gallery, attributes, prices } = productDetails;
 
     const idForCart = selectedAttributes.reduce(
       (collectAttr, currentAtrItem) =>
+       // @ts-ignore 
         collectAttr + "_" + currentAtrItem.selectedAttrItemId,
       ""
     );
@@ -80,13 +90,15 @@ const ProductDetail = (props) => {
         prices: prices,
         selectedAttributes: selectedAttributes,
         quantity: 1,
+        category: "",
+        description: "",
       })
     );
   };
-
+ // @ts-ignore 
   const { brand, name, gallery, attributes, prices, inStock, description } =
     productDetails;
-
+ // @ts-ignore 
   const setCurrSymbol = useSelector((state) => state.currency.setCurrSymbol);
 
   const sanitizedDescription = DOMPurify.sanitize(description);
@@ -100,7 +112,7 @@ const ProductDetail = (props) => {
   if (error) {
     return <p>Sorry, something went wrong</p>;
   }
-  console.log('attributes', )
+  console.log("attributes");
   return (
     <>
       <div className={classes.card}>
@@ -115,8 +127,11 @@ const ProductDetail = (props) => {
           <h1 className={classes.brand}>{brand}</h1>
           <h2 className={classes.name}>{name}</h2>
           {attributes && (
+            
             <div className={classes.attributes}>
-              {attributes.map((attribute, index) => (
+              
+              {attributes.map( // @ts-ignore 
+              (attribute, index) => (
                 <ProductAttributes
                   key={index + attribute.id}
                   attrName={attribute.name}

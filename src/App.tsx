@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Layout from "./components/Layout/Layout";
 import Category from "./components/Products/Category";
 import Cart from "./components/Cart/Cart";
-import ProductDetails from "./components/Products/ProductDetail";
+import ProductDetail from "./components/Products/ProductDetail";
 import { getCategories } from "./graphql/queries";
 import { Route, Switch, Redirect } from "react-router-dom";
 import NotFound from "./components/UI/NotFound";
@@ -37,7 +37,7 @@ const App = () => {
             <Category />
           </Route>
           <Route path="/categories/:categoryName/:productId">
-            <ProductDetails />
+            <ProductDetail />
           </Route>
           <Route path="/cart">
             <Cart />
