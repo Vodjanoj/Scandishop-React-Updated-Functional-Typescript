@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../hooks/redux";
+ 
+import { useAppSelector, useAppDispatch } from "../../hooks/redux";
 import ProductItem from "./ProductItem";
 import classes from "./ProductList.module.css";
 import { filterPrices } from "../Utils/filterPrices";
@@ -18,7 +18,7 @@ const ProductList = (props: ProductListProps) => {
   const [error, setError] = useState(false);
   const { productItems } = props;
   let { setCurrSymbol } = useAppSelector((state: RootState) => state.currency);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const addToCartHandler = (event: React.MouseEvent, prodItem: Product) => {
     event.preventDefault();
