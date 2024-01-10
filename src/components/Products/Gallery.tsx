@@ -1,6 +1,15 @@
+import { Maybe } from "../../gql/graphql";
 import classes from "./Gallery.module.css";
 
-const Gallery = (props) => {
+interface GalleryProps {
+  images?: Maybe<Maybe<string>[]> | undefined;
+  name: string;
+  brand: string;
+  selectedImage: string | null;
+  onSelectImage: (image: Maybe<string>) => void;
+}
+
+const Gallery = (props: GalleryProps) => {
   const { images, name, brand, selectedImage, onSelectImage } = props;
   return (
     <>
@@ -12,13 +21,17 @@ const Gallery = (props) => {
               className={classes.item}
               onClick={onSelectImage.bind(this, image)}
             >
-              <img src={image} alt={brand + ", " + name + " thumbnail"}></img>
+              {image && (
+                <img src={image} alt={brand + ", " + name + " thumbnail"}></img>
+              )}
               <div className={classes["overlay-gray"]}></div>
             </div>
           ))}
       </div>
       <div className={classes["main-image"]}>
-        {images && <img src={selectedImage} alt={brand + ", " + name}></img>}
+        {images && selectedImage && (
+          <img src={selectedImage} alt={brand + ", " + name}></img>
+        )}
       </div>
     </>
   );

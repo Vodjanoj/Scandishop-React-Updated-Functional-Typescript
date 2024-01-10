@@ -1,6 +1,6 @@
 import classes from "./DropdownItem.module.css";
 
-type DropdownItemProps = {
+interface DropdownItemProps {
   symbol: string;
   label: string;
   onSelectCurrency: () => void;

@@ -1,5 +1,6 @@
 import classes from "./ProductAttributesItem.module.css";
 
+// @ts-ignore
 const ProductAttributesItem = (props) => {
   const {
     orderItemId,
@@ -23,7 +24,9 @@ const ProductAttributesItem = (props) => {
         }`}
         style={{
           backgroundColor: isColor && value,
+          // @ts-ignore
           outline: value === "#FFFFFF" && "1px solid #000000",
+          // @ts-ignore
           outlineOffset: value === "#FFFFFF" && "-1px",
         }}
       >
@@ -42,7 +45,9 @@ const ProductAttributesItem = (props) => {
         <span
           className={classes.checkmark}
           style={{
+            // @ts-ignore
             width: !isColor && !cartOverlay && "63px",
+            // @ts-ignore
             height: !isColor && !cartOverlay && "45px",
           }}
         >

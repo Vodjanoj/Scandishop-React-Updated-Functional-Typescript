@@ -1,6 +1,8 @@
 import ProductAttributesItem from "./ProductAttributesItem";
 import classes from "./ProductAttributes.module.css";
 
+
+// @ts-ignore
 const ProductAttributes = (props) => {
   const {
     cartOverlay,
@@ -13,8 +15,10 @@ const ProductAttributes = (props) => {
     selectedAttributes,
   } = props;
 
+// @ts-ignore
   const findSelected = (attrItemId, attrId) => {
     const filteredAttrById = selectedAttributes.filter(
+      // @ts-ignore
       (selectedAtr) =>
         selectedAtr.selectedAttrItemId === attrItemId &&
         selectedAtr.id === attrId
@@ -32,8 +36,10 @@ const ProductAttributes = (props) => {
         className={`${classes["attribute-items"]} ${
           cartOverlay ? classes[`cart-overlay`] : ""
         }`}
-      >
-        {attributes.items.map((attrItem, index) => (
+      > 
+        {attributes.items.map((
+          // @ts-ignore
+          attrItem, index) => (
           <ProductAttributesItem
             orderItemId={orderItemId}
             key={index + attrItem.id}
