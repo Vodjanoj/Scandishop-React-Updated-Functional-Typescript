@@ -1,29 +1,48 @@
 import ProductAttributesItem from "./ProductAttributesItem";
 import classes from "./ProductAttributes.module.css";
+import { Maybe, AttributeSet } from "../../gql/graphql";
+import { selectedAttribute } from "../../store/cart-slice";
 
+interface ProductAttributesProps {
+  attrName?: Maybe<string>;
+  attrId?: Maybe<string>;
+  cartOverlay?: boolean | undefined;
+  mainCart?: boolean | undefined;
+  attributes: Maybe<AttributeSet>;
+  orderItemId?: string;
+  selectedAttributes: Maybe<selectedAttribute>[] | undefined;
+  onSelectAttr: (
+    attrId: Maybe<string> | undefined,
+    attrItId: Maybe<string> | undefined
+  ) => void;
+}
 
-// @ts-ignore
-const ProductAttributes = (props) => {
+const ProductAttributes = (props: ProductAttributesProps) => {
   const {
     cartOverlay,
     mainCart,
     attributes,
     attrId,
     attrName,
-    onSelectAttr,
     orderItemId,
     selectedAttributes,
+    onSelectAttr,
   } = props;
 
-// @ts-ignore
-  const findSelected = (attrItemId, attrId) => {
+  const findSelected = (
+    attrItemId: Maybe<string> | undefined,
+    attrId: Maybe<string> | undefined
+  ) => {
+    console.log('attrItemId', attrItemId)
+    console.log('attrId', attrId)
+    // @ts-ignore
     const filteredAttrById = selectedAttributes.filter(
-      // @ts-ignore
       (selectedAtr) =>
+      // @ts-ignore
         selectedAtr.selectedAttrItemId === attrItemId &&
+        // @ts-ignore
         selectedAtr.id === attrId
     );
-
     return filteredAttrById;
   };
 
@@ -36,24 +55,23 @@ const ProductAttributes = (props) => {
         className={`${classes["attribute-items"]} ${
           cartOverlay ? classes[`cart-overlay`] : ""
         }`}
-      > 
-        {attributes.items.map((
-          // @ts-ignore
-          attrItem, index) => (
-          <ProductAttributesItem
-            orderItemId={orderItemId}
-            key={index + attrItem.id}
-            index={index}
-            displValue={attrItem.displayValue}
-            attrName={attrName}
-            selected={findSelected(attrItem.id, attrId)}
-            isColor={attrName === "Color"}
-            value={attrItem.value}
-            onChangeAtr={() => onSelectAttr(attrId, attrItem.id)}
-            cartOverlay={cartOverlay}
-            mainCart={mainCart}
-          />
-        ))}
+      >
+        {attributes &&
+          attributes.items?.map((attrItem, index) => (
+            <ProductAttributesItem
+              orderItemId={orderItemId}
+              key={attrItem?.id}
+              index={index}
+              displValue={attrItem?.displayValue}
+              attrName={attrName}
+              selected={findSelected(attrItem?.id, attrId)}
+              isColor={attrName === "Color"}
+              value={attrItem?.value}
+              onChangeAtr={() => onSelectAttr(attrId, attrItem?.id)}
+              cartOverlay={cartOverlay}
+              mainCart={mainCart}
+            />
+          ))}
       </div>
     </>
   );

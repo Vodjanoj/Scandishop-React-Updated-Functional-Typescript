@@ -3,7 +3,10 @@ import DOMPurify from "dompurify";
 import ProductAttributes from "./ProductAttributes";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux";
 import { filterPrices } from "../Utils/filterPrices";
-import { getProductsById, getProductsAttributesById } from "../../graphql/queries";
+import {
+  getProductsById,
+  getProductsAttributesById,
+} from "../../graphql/queries";
 import classes from "./ProductDetail.module.css";
 import { withRouter, useParams, RouteComponentProps } from "react-router-dom";
 import { cartActions, selectedAttribute } from "../../store/cart-slice";
@@ -20,7 +23,7 @@ type ProductDetailProps = RouteComponentProps<ProductDetailsParams>;
 const ProductDetail = (props: ProductDetailProps) => {
   const [productDetails, setProductDetails] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [selectedAttributes, setSelectedAttributes] = useState<selectedAttribute[]>([]);
+  const [selectedAttributes, setSelectedAttributes] = useState<selectedAttribute[] | undefined>([]);
   const [error, setError] = useState(false);
   const dispatch = useAppDispatch();
   const { productId } = useParams<ProductDetailsParams>();
@@ -42,7 +45,7 @@ const ProductDetail = (props: ProductDetailProps) => {
         const attributes: AttributeSet[] = await getProductsAttributesById(
           productId
         );
-
+         // @ts-ignore
         const selectedAttributes: selectedAttribute[] = attributes.map(
           (attribute) => {
             const firstItem = attribute.items?.[0];
@@ -66,14 +69,21 @@ const ProductDetail = (props: ProductDetailProps) => {
     loadProductDetailsHandler();
   }, [productId]);
 
-  const selectAttrHandler = (attId: string, attItemId: string) => {
-    const updatedSelcAttr = selectedAttributes.map((attribute) =>
-      attribute.id === attId
-        ? { ...attribute, selectedAttrItemId: attItemId }
-        : attribute
-    );
-    
-    setSelectedAttributes(updatedSelcAttr);
+  const selectAttrHandler = (
+    attId: Maybe<string> | undefined,
+    attItemId: Maybe<string> | undefined
+  ) => {
+    if (selectedAttributes) {
+      const updatedSelcAttr = selectedAttributes.map((attribute) =>
+        attribute?.id === attId
+          ? { ...attribute, selectedAttrItemId: attItemId }
+          : attribute
+      );
+      if (updatedSelcAttr) {
+      setSelectedAttributes(updatedSelcAttr);
+      }
+    }
+     
   };
 
   const selectImageHandler = (image: Maybe<string>) => {
@@ -83,12 +93,14 @@ const ProductDetail = (props: ProductDetailProps) => {
   if (!productDetails) {
     return null;
   }
-  const { id, brand, name, gallery, attributes, prices, inStock, description } = productDetails;
+  const { id, brand, name, gallery, attributes, prices, inStock, description } =
+    productDetails;
 
   const addToCartHandler = () => {
+    // @ts-ignore
     const idForCart = selectedAttributes.reduce(
       (collectAttr, currentAtrItem) =>
-        collectAttr + "_" + currentAtrItem.selectedAttrItemId,
+        collectAttr + "_" + currentAtrItem?.selectedAttrItemId,
       ""
     );
 
@@ -119,7 +131,7 @@ const ProductDetail = (props: ProductDetailProps) => {
   if (error) {
     return <p>Sorry, something went wrong</p>;
   }
- 
+
   return (
     <>
       <div className={classes.card}>

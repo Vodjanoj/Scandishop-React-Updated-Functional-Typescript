@@ -26,7 +26,7 @@ const ProductList = (props: ProductListProps) => {
     const loadProductDetailsHandler = async () => {
       try {
         const attributes: AttributeSet[] = await getProductsAttributesById(prodItem.id);
-
+        // @ts-ignore
         const selectedAttributes: selectedAttribute[] = attributes.map(
           (attribute) => {
             const firstItem = attribute.items?.[0];
