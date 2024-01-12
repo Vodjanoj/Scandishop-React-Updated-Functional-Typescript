@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Price, Product, AttributeSet, Maybe } from "../gql/graphql";
+import { Price, Product, Maybe } from "../gql/graphql";
 
 interface CartItem extends Product {
   quantity: number;
-  selectedAttributes?: Maybe<selectedAttribute>[];
+  selectedAttributes?: selectedAttribute[];
   prices: Price[];
 }
 
 export interface selectedAttribute  {
   id: string;
-  name: string;
+  name: Maybe<string> | undefined;
   selectedAttrItemId: Maybe<string> | undefined;
 }
 

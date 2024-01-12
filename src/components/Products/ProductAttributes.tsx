@@ -4,13 +4,13 @@ import { Maybe, AttributeSet } from "../../gql/graphql";
 import { selectedAttribute } from "../../store/cart-slice";
 
 interface ProductAttributesProps {
-  attrName?: Maybe<string>;
-  attrId?: Maybe<string>;
+  attrName: Maybe<string> | undefined;
+  attrId: Maybe<string> | undefined;
   cartOverlay?: boolean | undefined;
   mainCart?: boolean | undefined;
   attributes: Maybe<AttributeSet>;
   orderItemId?: string;
-  selectedAttributes: Maybe<selectedAttribute>[] | undefined;
+  selectedAttributes: selectedAttribute[];
   onSelectAttr: (
     attrId: Maybe<string> | undefined,
     attrItId: Maybe<string> | undefined
@@ -33,14 +33,9 @@ const ProductAttributes = (props: ProductAttributesProps) => {
     attrItemId: Maybe<string> | undefined,
     attrId: Maybe<string> | undefined
   ) => {
-    console.log('attrItemId', attrItemId)
-    console.log('attrId', attrId)
-    // @ts-ignore
     const filteredAttrById = selectedAttributes.filter(
       (selectedAtr) =>
-      // @ts-ignore
         selectedAtr.selectedAttrItemId === attrItemId &&
-        // @ts-ignore
         selectedAtr.id === attrId
     );
     return filteredAttrById;
@@ -57,11 +52,10 @@ const ProductAttributes = (props: ProductAttributesProps) => {
         }`}
       >
         {attributes &&
-          attributes.items?.map((attrItem, index) => (
+          attributes.items?.map((attrItem) => (
             <ProductAttributesItem
               orderItemId={orderItemId}
               key={attrItem?.id}
-              index={index}
               displValue={attrItem?.displayValue}
               attrName={attrName}
               selected={findSelected(attrItem?.id, attrId)}

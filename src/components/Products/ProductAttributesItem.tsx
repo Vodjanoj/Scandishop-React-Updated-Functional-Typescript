@@ -1,7 +1,20 @@
 import classes from "./ProductAttributesItem.module.css";
+import { Maybe } from "../../gql/graphql";
+import { selectedAttribute } from "../../store/cart-slice";
 
-// @ts-ignore
-const ProductAttributesItem = (props) => {
+interface ProductAttributesItemProps {
+  orderItemId?: string;
+  attrName: Maybe<string> | undefined;
+  value: Maybe<string> | undefined;
+  displValue: Maybe<string> | undefined;
+  cartOverlay?: boolean | undefined;
+  mainCart?: boolean | undefined;
+  isColor: boolean;
+  selected: selectedAttribute[];
+  onChangeAtr: () => void;
+}
+
+const ProductAttributesItem = (props: ProductAttributesItemProps) => {
   const {
     orderItemId,
     attrName,
@@ -23,11 +36,9 @@ const ProductAttributesItem = (props) => {
           mainCart ? classes[`main-cart`] : ""
         }`}
         style={{
-          backgroundColor: isColor && value,
-          // @ts-ignore
-          outline: value === "#FFFFFF" && "1px solid #000000",
-          // @ts-ignore
-          outlineOffset: value === "#FFFFFF" && "-1px",
+          backgroundColor: isColor && value ? value : undefined,
+          outline: value === "#FFFFFF" ? "1px solid" : undefined,
+          outlineOffset: value === "#FFFFFF" ? "-1px" : undefined,
         }}
       >
         <input
@@ -35,7 +46,7 @@ const ProductAttributesItem = (props) => {
           name={`${cartOverlay ? orderItemId + "_" + attrName : attrName} ${
             mainCart ? orderItemId + " main_cart" : ""
           }`}
-          value={value}
+          value={value ? value : undefined}
           checked={
             selected.length > 0 && selected[0].selectedAttrItemId === displValue
           }
@@ -45,10 +56,8 @@ const ProductAttributesItem = (props) => {
         <span
           className={classes.checkmark}
           style={{
-            // @ts-ignore
-            width: !isColor && !cartOverlay && "63px",
-            // @ts-ignore
-            height: !isColor && !cartOverlay && "45px",
+            width: !isColor && !cartOverlay ? "63px" : undefined,
+            height: !isColor && !cartOverlay ? "45px" : undefined,
           }}
         >
           {!isColor && value}

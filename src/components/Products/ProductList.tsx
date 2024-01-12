@@ -26,11 +26,9 @@ const ProductList = (props: ProductListProps) => {
     const loadProductDetailsHandler = async () => {
       try {
         const attributes: AttributeSet[] = await getProductsAttributesById(prodItem.id);
-        // @ts-ignore
         const selectedAttributes: selectedAttribute[] = attributes.map(
           (attribute) => {
             const firstItem = attribute.items?.[0];
-
             return {
               id: attribute.id,
               name: attribute.name,
@@ -38,7 +36,7 @@ const ProductList = (props: ProductListProps) => {
             };
           }
         );
-
+  
         const idForCart = selectedAttributes.reduce(
           (collectAttr, currentAtrItem) =>
             collectAttr + "_" + currentAtrItem.selectedAttrItemId,
