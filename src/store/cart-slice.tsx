@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Price, Product, Maybe } from "../gql/graphql";
 
-interface CartItem extends Product {
+export interface CartItem extends Product {
   quantity: number;
-  selectedAttributes?: selectedAttribute[];
+  selectedAttributes: selectedAttribute[];
   prices: Price[];
 }
 

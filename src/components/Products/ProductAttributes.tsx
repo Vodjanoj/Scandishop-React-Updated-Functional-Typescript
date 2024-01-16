@@ -10,8 +10,8 @@ interface ProductAttributesProps {
   mainCart?: boolean | undefined;
   attributes: Maybe<AttributeSet>;
   orderItemId?: string;
-  selectedAttributes: selectedAttribute[];
-  onSelectAttr: (
+  selectedAttributes: selectedAttribute[] | undefined;
+  onSelectAttr?: (
     attrId: Maybe<string> | undefined,
     attrItId: Maybe<string> | undefined
   ) => void;
@@ -33,7 +33,7 @@ const ProductAttributes = (props: ProductAttributesProps) => {
     attrItemId: Maybe<string> | undefined,
     attrId: Maybe<string> | undefined
   ) => {
-    const filteredAttrById = selectedAttributes.filter(
+    const filteredAttrById = selectedAttributes?.filter(
       (selectedAtr) =>
         selectedAtr.selectedAttrItemId === attrItemId &&
         selectedAtr.id === attrId
@@ -61,7 +61,7 @@ const ProductAttributes = (props: ProductAttributesProps) => {
               selected={findSelected(attrItem?.id, attrId)}
               isColor={attrName === "Color"}
               value={attrItem?.value}
-              onChangeAtr={() => onSelectAttr(attrId, attrItem?.id)}
+              onChangeAtr={() => onSelectAttr?.(attrId, attrItem?.id)}
               cartOverlay={cartOverlay}
               mainCart={mainCart}
             />

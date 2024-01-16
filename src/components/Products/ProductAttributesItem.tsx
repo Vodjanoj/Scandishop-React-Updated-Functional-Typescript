@@ -10,7 +10,7 @@ interface ProductAttributesItemProps {
   cartOverlay?: boolean | undefined;
   mainCart?: boolean | undefined;
   isColor: boolean;
-  selected: selectedAttribute[];
+  selected: selectedAttribute[] | undefined;
   onChangeAtr: () => void;
 }
 
@@ -47,8 +47,10 @@ const ProductAttributesItem = (props: ProductAttributesItemProps) => {
             mainCart ? orderItemId + " main_cart" : ""
           }`}
           value={value ? value : undefined}
-          checked={
-            selected.length > 0 && selected[0].selectedAttrItemId === displValue
+          checked={ 
+            selected && 
+            selected.length > 0 && 
+            selected[0].selectedAttrItemId === displValue
           }
           disabled={cartOverlay || mainCart}
           onChange={onChangeAtr}

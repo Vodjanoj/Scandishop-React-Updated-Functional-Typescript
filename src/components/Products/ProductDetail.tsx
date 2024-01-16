@@ -128,8 +128,6 @@ const ProductDetail = (props: ProductDetailProps) => {
     return <p>Sorry, something went wrong</p>;
   }
 
-  console.log("productDetails", productDetails);
-
   return (
     <>
       <div className={classes.card}>

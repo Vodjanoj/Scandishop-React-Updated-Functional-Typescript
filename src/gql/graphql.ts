@@ -68,6 +68,7 @@ export type Currency = {
 };
 
 export type Price = {
+  length: number;
   __typename?: "Price";
   amount: Scalars["Float"]["output"];
   currency: Currency;

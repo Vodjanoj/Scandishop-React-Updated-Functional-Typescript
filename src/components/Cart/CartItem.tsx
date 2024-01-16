@@ -1,8 +1,26 @@
 import ProductAttributes from "../Products/ProductAttributes";
 import classes from "./CartItem.module.css";
 import ImageCarousel from "./ImageCarousel";
+import { Maybe, AttributeSet, Price} from "../../gql/graphql";
+import { selectedAttribute }  from '../../store/cart-slice';
 
-const CartItem = (props) => {
+interface CartItemProps {
+ mainCart: boolean;
+ cartOverlay: boolean | undefined;
+ brand: string;
+ name: string;
+ images?: Maybe<string>[] | undefined | null;
+ mainPicture: Maybe<string> | undefined;
+ orderItemId: string;
+ attributes?: Maybe<Maybe<AttributeSet>[]> | undefined;
+ selectedAttributes: selectedAttribute[] | undefined;
+ currPrice: Price[];
+ quantity: number;
+ onAdd: () => void;
+ onRemove: () => void;
+}
+
+const CartItem = (props: CartItemProps) => {
   const { symbol } = props.currPrice[0].currency;
   const { amount } = props.currPrice[0];
   const {
@@ -12,7 +30,6 @@ const CartItem = (props) => {
     name,
     images,
     mainPicture,
-    price,
     orderItemId,
     attributes,
     selectedAttributes,
@@ -20,6 +37,7 @@ const CartItem = (props) => {
     onAdd,
     onRemove,
   } = props;
+  console.log('props.currPrice', props.currPrice)
 
   return (
     <>
@@ -33,17 +51,16 @@ const CartItem = (props) => {
             <div className={classes.brand}>{brand}</div>
             <div className={classes.name}>{name}</div>
             <span className={classes.price}>
-              {price}
               {symbol}
               {amount}
             </span>
             <div>
-              {attributes.map((attribute, index) => (
+              {attributes?.map((attribute, index) => (
                 <ProductAttributes
                   orderItemId={orderItemId}
-                  key={index + attribute.id}
-                  attrName={attribute.name}
-                  attrId={attribute.id}
+                  key={attribute?.id}
+                  attrName={attribute?.name}
+                  attrId={attribute?.id}
                   attributes={attribute}
                   selectedAttributes={selectedAttributes}
                   cartOverlay={cartOverlay}
@@ -64,7 +81,7 @@ const CartItem = (props) => {
         {cartOverlay && (
           <div className={classes.image}>
             <div className={classes["overlay-gray"]}></div>
-            <img src={mainPicture} alt={brand + ", " + name}></img>
+            <img src={mainPicture ? mainPicture: undefined} alt={brand + ", " + name}></img>
           </div>
         )}
       </li>

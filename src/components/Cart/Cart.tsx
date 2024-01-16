@@ -1,18 +1,26 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../hooks/redux";
 import { createSelector } from "reselect";
 import classes from "./Cart.module.css";
 import Backdrop from "../UI/Backdrop";
 import CartItem from "./CartItem";
 import { filterPrices } from "../Utils/filterPrices";
 import { cartActions } from "../../store/cart-slice";
+import { CartItem as StoreCartItem } from "../../store/cart-slice";
 import Button from "../UI/Button";
 import { Link } from "react-router-dom";
+import { RootState } from "../../store";
+import { Price } from "../../gql/graphql";
+
+interface CartProps {
+  cartOverlay?: boolean,
+  onCloseCartOverlay?: ()=> void;
+}
 
 // Create individual selectors
-const cartItemsSelector = (state) => state.cart.items;
-const totalQuantitySelector = (state) => state.cart.totalQuantity;
-const setCurrSymbolSelector = (state) => state.currency.setCurrSymbol;
+const cartItemsSelector = (state:RootState) => state.cart.items;
+const totalQuantitySelector = (state:RootState) => state.cart.totalQuantity;
+const setCurrSymbolSelector = (state:RootState) => state.currency.setCurrSymbol;
 
 // Create memoized selector using createSelector
 const cartDataSelector = createSelector(
@@ -24,9 +32,9 @@ const cartDataSelector = createSelector(
   })
 );
 
-const Cart = (props) => {
+const Cart = (props: CartProps) => {
   const { cartOverlay, onCloseCartOverlay } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!cartOverlay) {
@@ -34,24 +42,25 @@ const Cart = (props) => {
     }
   }, [cartOverlay]);
 
-  const { products, totalQuantity, setCurrSymbol } = useSelector((state) => cartDataSelector(state));
-
-  const calcTotalPriceHandler = (currSymb, products) => {
+  const { products, totalQuantity, setCurrSymbol } = useAppSelector((state) => cartDataSelector(state));
+ 
+  const calcTotalPriceHandler = (currSymb: string, products: StoreCartItem[]) => {
+     
     return products.reduce((sum, { prices, quantity }) => {
-      const price = filterPrices(prices, currSymb);
-
+      const price: Price[] = filterPrices(prices, currSymb);
+           
       if (price.length > 0) {
         return sum + price[0].amount * quantity;
       }
       return sum;
     }, 0);
   };
-
-  const addItemHandler = (orderItem) => {
+ 
+  const addItemHandler = (orderItem: StoreCartItem) => {
     dispatch(cartActions.addToCart(orderItem));
   };
-
-  const removeItemHandler = (id) => {
+ 
+  const removeItemHandler = (id:string) => {
     dispatch(cartActions.removeFromCart(id));
   };
 
@@ -63,7 +72,7 @@ const Cart = (props) => {
     <>
       <div
         className={`${classes.cart} ${cartOverlay ? classes.overlay : ""}`}
-        onClick={cartOverlay && ((e) => e.stopPropagation())}
+        onClick={cartOverlay ? cartOverlay && ((e) => e.stopPropagation()) : undefined}
       >
         <div className={classes.inner}>
           {!cartOverlay && <h2 className={classes.title}>Cart</h2>}
@@ -91,10 +100,10 @@ const Cart = (props) => {
                   brand={orderItem.brand}
                   quantity={orderItem.quantity}
                   images={orderItem.gallery}
-                  mainPicture={orderItem.gallery[0]}
+                  mainPicture={orderItem.gallery?.[0]}
                   mainCart={!cartOverlay}
                   cartOverlay={cartOverlay}
-                  currPrice={filterPrices(orderItem.prices, setCurrSymbol)}
+                  currPrice={filterPrices(orderItem.prices, setCurrSymbol)}  
                   selectedAttributes={orderItem.selectedAttributes}
                   onAdd={addItemHandler.bind(null, orderItem)}
                   onRemove={removeItemHandler.bind(null, orderItem.id)}
