@@ -37,7 +37,6 @@ const CartItem = (props: CartItemProps) => {
     onAdd,
     onRemove,
   } = props;
-  console.log('props.currPrice', props.currPrice)
 
   return (
     <>

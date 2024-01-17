@@ -1,7 +1,7 @@
 import MainNavigation from "./MainNavigation";
 import classes from "./Layout.module.css";
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <MainNavigation />

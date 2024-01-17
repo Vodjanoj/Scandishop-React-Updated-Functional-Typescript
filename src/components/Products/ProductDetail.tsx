@@ -3,10 +3,7 @@ import DOMPurify from "dompurify";
 import ProductAttributes from "./ProductAttributes";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux";
 import { filterPrices } from "../Utils/filterPrices";
-import {
-  getProductsById,
-  getProductsAttributesById,
-} from "../../graphql/queries";
+import { getProductsById, getProductsAttributesById } from "../../graphql/queries";
 import classes from "./ProductDetail.module.css";
 import { withRouter, useParams, RouteComponentProps } from "react-router-dom";
 import { cartActions, selectedAttribute } from "../../store/cart-slice";

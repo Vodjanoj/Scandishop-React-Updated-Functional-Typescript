@@ -1,28 +1,39 @@
 import { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/redux";
 import classes from "./MainNavigation.module.css";
 import { getCategories } from "../../graphql/queries";
 import mainLogo from "../../assets/a-logo.png";
 import Dropdown from "./Dropdown";
 import CartGroup from "../Cart/CartGroup";
+import { RootState } from "../../store";
+
+type CategoryType = {
+  __typename?: "Category" | undefined;
+  name?: string | null | undefined;
+};
 
 const MainNavigation = () => {
-  const [allCategories, setAllCategories] = useState([]);
+  const [allCategories, setAllCategories] = useState<CategoryType[]>([]);
   const [error, setError] = useState(false);
 
-  let totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  let totalQuantity = useAppSelector(
+    (state: RootState) => state.cart.totalQuantity
+  );
 
   useEffect(() => {
     const loadAllCategoriesHandler = async () => {
       try {
         const data = await getCategories();
 
-        setAllCategories(data);
+        const filteredData = (data || []).filter(
+          (cat) => cat !== null) as CategoryType[];
+        setAllCategories(filteredData);
       } catch (error) {
         setError(true);
       }
     };
+
     loadAllCategoriesHandler();
   }, []);
 
@@ -33,19 +44,20 @@ const MainNavigation = () => {
     <header className={classes.header}>
       <div className={classes.inner}>
         <nav className={classes.nav}>
-          {allCategories.map((cat, index) => (
+          {allCategories.map((cat) => (
             <NavLink
-              key={index + cat.name}
+              key={cat.name}
               activeClassName={classes.active}
               to={"/categories/" + cat.name}
-              title={cat.name}
+              title={cat.name ? cat.name : undefined}
             >
               {cat.name}
             </NavLink>
           ))}
         </nav>
         <div className={classes.logo}>
-          <Link to={"/"} exact="true">
+          
+          <Link to={"/"}>
             <img src={mainLogo} alt="Shopping!"></img>
           </Link>
         </div>
