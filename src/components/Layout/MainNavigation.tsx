@@ -56,7 +56,6 @@ const MainNavigation = () => {
           ))}
         </nav>
         <div className={classes.logo}>
-          
           <Link to={"/"}>
             <img src={mainLogo} alt="Shopping!"></img>
           </Link>

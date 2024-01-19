@@ -66,7 +66,7 @@ const Cart = (props: CartProps) => {
 
   const totalPrice = calcTotalPriceHandler(setCurrSymbol, products);
 
-  let tax = (totalPrice * 0.21).toFixed(2);
+  let tax: number = Number((totalPrice * 0.21).toFixed(2));
  
   return (
     <>

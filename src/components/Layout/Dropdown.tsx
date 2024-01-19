@@ -11,7 +11,7 @@ import { Currency } from "../../gql/graphql";
 const Dropdown = () => {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const [allCurrencies, setAllCurrencies] = useState<Currency[]>([]);
-  const dropdownRef = useRef<HTMLInputElement | null>(null);
+  const dropdownRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const setCurrSymbol = useAppSelector(
     (state: RootState) => state.currency.setCurrSymbol

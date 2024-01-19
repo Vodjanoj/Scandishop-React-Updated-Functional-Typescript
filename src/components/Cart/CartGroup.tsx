@@ -4,8 +4,12 @@ import cartIcon from "../../assets/cart-icon.png";
 import Cart from "./Cart";
 import classes from "./CartGroup.module.css";
 
-const CartGroup = (props) => {
-  const cartoverlayRef = useRef();
+interface CartGroupProps {
+  totalQuantity: number;
+}
+
+const CartGroup = (props: CartGroupProps) => {
+  const cartoverlayRef =  useRef<HTMLInputElement>(null);;
   const [cartOverlayIsShown, setCartOverlayIsShown] = useState(false);
 
   useEffect(() => {
@@ -24,11 +28,12 @@ const CartGroup = (props) => {
     setCartOverlayIsShown(false);
   };
 
-  const clickOutsideHandler = (event) => {
+  const clickOutsideHandler = (event: MouseEvent) => {
     const current = cartoverlayRef.current;
-
-    if (!current.contains(event.target)) {
-      setCartOverlayIsShown(false);
+    if (current) {
+      if (!current.contains(event.target as Node)) {
+        setCartOverlayIsShown(false);
+      }
     }
   };
 
