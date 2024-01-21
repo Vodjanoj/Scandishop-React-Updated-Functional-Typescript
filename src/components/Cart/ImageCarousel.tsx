@@ -32,38 +32,30 @@ const ImageCarousel = (props: ImageCarouselProps) => {
       (image) => image === mainImage
     );
     let updatedIndex: number = 0;
-    
+
     if (images && currentImageIndex === images.length - 1) {
       updatedIndex = 0;
     } else {
-      updatedIndex = currentImageIndex || currentImageIndex === 0  ? currentImageIndex + 1 : 0;
+      updatedIndex =
+        currentImageIndex || currentImageIndex === 0
+          ? currentImageIndex + 1
+          : 0;
     }
-    
-    if (images) { 
-    setMainImage(images[updatedIndex]);
-    };
-  }
+
+    if (images) {
+      setMainImage(images[updatedIndex]);
+    }
+  };
   return (
     <div className={classes.carousel}>
       <div className={classes["overlay-gray"]}></div>
-
-      <img // @ts-ignore
-        src={mainImage}
-        alt={brand + ", " + name}
-      ></img>
-
-      {
-        // @ts-ignore
-        images.length > 1 && (
-          <div onClick={slideBackHandler} className={classes.back}></div>
-        )
-      }
-      {
-        // @ts-ignore
-        images.length > 1 && (
-          <div onClick={slideForwardHandler} className={classes.forward}></div>
-        )
-      }
+      <img src={mainImage ? mainImage : undefined} alt={brand + ", " + name}></img>
+      {images && images.length > 1 && (
+        <div onClick={slideBackHandler} className={classes.back}></div>
+      )}
+      {images && images.length > 1 && (
+        <div onClick={slideForwardHandler} className={classes.forward}></div>
+      )}
     </div>
   );
 };

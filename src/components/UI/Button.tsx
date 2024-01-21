@@ -1,6 +1,16 @@
 import classes from "./Button.module.css";
 
-const Button = (props) => {
+interface ButtonProps {
+  type?: 'submit' | 'reset' | 'button' | undefined;
+  viewBag?: boolean;
+  checkOut?: boolean;
+  order?: boolean;
+  disabled?: boolean;
+  clicked?: ()=> void;
+  children: React.ReactNode;
+}
+
+const Button = (props: ButtonProps) => {
   const { type, viewBag, checkOut, order, disabled, clicked, children } = props;
   return (
     <button
