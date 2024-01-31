@@ -17,12 +17,10 @@ interface CartProps {
   onCloseCartOverlay?: ()=> void;
 }
 
-// Create individual selectors
 const cartItemsSelector = (state:RootState) => state.cart.items;
 const totalQuantitySelector = (state:RootState) => state.cart.totalQuantity;
 const setCurrSymbolSelector = (state:RootState) => state.currency.setCurrSymbol;
 
-// Create memoized selector using createSelector
 const cartDataSelector = createSelector(
   [cartItemsSelector, totalQuantitySelector, setCurrSymbolSelector],
   (items, totalQuantity, setCurrSymbol) => ({
