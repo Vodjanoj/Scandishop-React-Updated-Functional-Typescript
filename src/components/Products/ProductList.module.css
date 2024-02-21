@@ -18,3 +18,11 @@
     grid-gap: 60px 10px;
   }
 }
+
+
+@media (max-width: 770px) {
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 5px 5px;
+  }
+}
