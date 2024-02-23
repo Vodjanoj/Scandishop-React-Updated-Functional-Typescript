@@ -151,15 +151,15 @@ const Cart = (props: CartProps) => {
               </Link>
             )}
             {cartOverlay && (
-              <Link to={"/checkout"}>
-                <Button checkOut clicked={onCloseCartOverlay}>
+              <Link to={"#"}>
+                <Button checkOut>
                   Check Out
                 </Button>
               </Link>
             )}
             {!cartOverlay && (
-              <Link to={"/order"}>
-                <Button order clicked={onCloseCartOverlay}>
+              <Link to={"#"}>
+                <Button order>
                   Order
                 </Button>
               </Link>
