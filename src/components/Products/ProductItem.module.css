@@ -101,3 +101,15 @@
     font-size: 24px;
   }
 }
+
+@media (max-width: 770px) {
+  .image {
+    height: 320px;
+  }
+}
+
+@media (max-width: 575px) {
+  .image {
+    height: 450px;
+  }
+}
