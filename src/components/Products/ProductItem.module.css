@@ -114,13 +114,12 @@
   }
 
   .name {
-    font-size: 22px;
-  }
-
-  .price {
-    font-size: 22px;
+    font-size: 16px;
   }
 }
 
- 
- 
+@media (max-width: 320px) {
+  .image {
+    height: 300px;
+  }
+}
