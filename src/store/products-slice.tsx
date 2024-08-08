@@ -5,6 +5,16 @@ interface ProductsSliceState {
     items: Product[];
 }
 
-const defaultCartState: ProductsSliceState = {
+const defaultProductsState: ProductsSliceState = {
     items: []
 }
+
+const productsSlice = createSlice({
+    name: 'Products',
+    initialState: defaultProductsState,
+    reducers: {
+        getProductsByCategory(state, action: PayloadAction<string>) {
+            
+        }
+    }
+});
