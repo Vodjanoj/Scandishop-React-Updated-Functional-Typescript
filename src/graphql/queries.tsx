@@ -39,7 +39,7 @@ export async function getCurrencies() {
   return currencies;
 }
 
-export async function getProductsById(id: string) {
+export async function getProductDetailsById(id: string) {
   const query = gql`
     query ProductQuery($id: String!) {
       product(id: $id) {

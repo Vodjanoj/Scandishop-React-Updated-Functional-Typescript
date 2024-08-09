@@ -3,7 +3,7 @@ import DOMPurify from "dompurify";
 import ProductAttributes from "./ProductAttributes";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux";
 import { filterPrices } from "../Utils/filterPrices";
-import { getProductsById, getProductsAttributesById } from "../../graphql/queries";
+import { getProductDetailsById, getProductsAttributesById } from "../../graphql/queries";
 import classes from "./ProductDetail.module.css";
 import { withRouter, useParams, RouteComponentProps } from "react-router-dom";
 import { cartActions, selectedAttribute } from "../../store/cart-slice";
@@ -32,7 +32,8 @@ const ProductDetail = (props: ProductDetailProps) => {
   useEffect(() => {
     const loadProductDetailsHandler = async () => {
       try {
-        const product: Product = await getProductsById(productId);
+        const product: Product = await getProductDetailsById(productId);
+        console.log('product', product)
 
         // A seperate query with fetchPolicy: "network-only" for getting attributes
         // of a product from a server, not from cache, by not getting the whole data of a product

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, current} from "@reduxjs/toolkit";
 import { Product } from "../gql/graphql";
 
 interface ProductsSliceState {
@@ -13,8 +13,12 @@ const productsSlice = createSlice({
     name: 'Products',
     initialState: defaultProductsState,
     reducers: {
-        getProductsByCategory(state, action: PayloadAction<string>) {
-            
+        setProductsByCategory(state, action: PayloadAction<Product[]>) {
+            state.items = action.payload;
+            console.log(current(state));
         }
-    }
+    }   
 });
+
+export const productsActions = productsSlice.actions;
+export default productsSlice;
