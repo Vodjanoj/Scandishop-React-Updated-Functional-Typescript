@@ -22,10 +22,10 @@ const Category = (props:CategoryProps) => {
     (state: RootState) => state.products.items
   );
   
-  props.history.listen((location, action) => {
-    console.log('Маршрут изменился:', location.pathname);
-    dispatch(getProducts(categoryName));  
-  });
+  // props.history.listen((location, action) => {
+  //   console.log('Маршрут изменился:', location.pathname);
+  //   dispatch(getProducts(categoryName));  
+  // });
   
 
   // const getData = (categoryName: string) => {
@@ -47,10 +47,10 @@ const Category = (props:CategoryProps) => {
   //   loadProductsByCatHandler();
   // };
 
-  // useEffect(() => {
-  //   // getData(categoryName);
-  //   dispatch(getProducts(categoryName));
-  // }, [categoryName]);
+  useEffect(() => {
+    // getData(categoryName);
+    dispatch(getProducts(categoryName));
+  }, [categoryName]);
 
   if (error) {
     return <p>Sorry, something went wrong!</p>;
