@@ -15,7 +15,6 @@ const productsSlice = createSlice({
     reducers: {
         setProductsByCategory(state, action: PayloadAction<Product[]>) {
             state.items = action.payload;
-            console.log(current(state));
         }
     }   
 });
