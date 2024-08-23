@@ -8,13 +8,13 @@ export const getProducts = (id: string) => {
     const loadProductsById = async () => {
       try {
         const rawData = await getProductsByCategory(id);
-        
-        const filteredData: Product[] = rawData.filter((item): item is Product => item !== null);
-          dispatch(productsActions.setProductsByCategory(filteredData));
-      
-      } catch (error) {
-        console.log("Something went wrong!");
-        console.log(error);
+
+        const filteredData: Product[] = rawData.filter(
+          (item): item is Product => item !== null
+        );
+        dispatch(productsActions.setProductsByCategory(filteredData));
+      } catch (error: any) {
+        dispatch(productsActions.itemsFetchingError(error.message));
       }
     };
     loadProductsById();

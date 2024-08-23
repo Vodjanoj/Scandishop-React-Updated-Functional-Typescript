@@ -9,25 +9,26 @@ import { RootState } from "../../store";
 
 const Category = () => {
   let { categoryName } = useParams<{ categoryName: string }>();
-  const [error, setError] = useState(false);
   const dispatch = useAppDispatch();
-  const productsByCategory = useAppSelector(
-    (state: RootState) => state.products.items
-  );
+  const { items, error } = useAppSelector((state: RootState) => state.products);
 
   useEffect(() => {
     dispatch(getProducts(categoryName));
   }, [categoryName, dispatch]);
 
-  console.log(productsByCategory)
+  console.log("items", items)
+  console.log("error", error)
+
 
   if (error) {
     return <p>Sorry, something went wrong!</p>;
   }
+
+   
   return (
     <>
       <h2 className={classes.name}>{categoryName}</h2>
-      <ProductList productItems={productsByCategory} />
+      <ProductList productItems={items} />
     </>
   );
 };

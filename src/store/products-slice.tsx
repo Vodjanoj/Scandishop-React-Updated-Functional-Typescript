@@ -3,10 +3,13 @@ import { Product } from "../gql/graphql";
 
 interface ProductsSliceState {
     items: Product[];
+    error: string;
+    
 }
 
 const defaultProductsState: ProductsSliceState = {
-    items: []
+    items: [],
+    error: ''
 }
 
 const productsSlice = createSlice({
@@ -15,7 +18,10 @@ const productsSlice = createSlice({
     reducers: {
         setProductsByCategory(state, action: PayloadAction<Product[]>) {
             state.items = action.payload;
-        }
+        },
+        itemsFetchingError(state, action: PayloadAction<string>) {
+            state.error = action.payload;
+          },
     }   
 });
 
